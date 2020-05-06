@@ -140,9 +140,153 @@
 <div class="nH">
 <div class="nH" role="main">
 <div class="nH g"></div>
-<h1 class="nH g">Assignment2</h1>
+<h1>Assignment2</h1>
 <h2>webots tutorial</h2>
 <h3>編成基礎(使用數值優化方法,控制器插件)</h3>
+<p>使用數值優化方法</p>
+<p>指數</p>
+<ul>
+<li><a href="https://cyberbotics.com/doc/guide/using-numerical-optimization-methods#choosing-the-correct-supervisor-approach"><span>選擇正確的主管方法</span></a>
+<ul>
+<li><a href="https://cyberbotics.com/doc/guide/using-numerical-optimization-methods#using-a-single-controller"><span>使用單個控制器</span></a></li>
+<li><a href="https://cyberbotics.com/doc/guide/using-numerical-optimization-methods#using-two-distinct-types-of-controllers"><span>使用兩種不同類型的控制器</span></a></li>
+</ul>
+</li>
+<li><a href="https://cyberbotics.com/doc/guide/using-numerical-optimization-methods#resetting-the-robot"><span>重置機器人</span></a>
+<ul>
+<li><a href="https://cyberbotics.com/doc/guide/using-numerical-optimization-methods#using-the-wb_supervisor_field_set_-and-wb_supervisor_simulation_reset_physics-functions"><span>使用wb_supervisor_field_set_ *</span><span>和wb_supervisor_simulation_reset_physics</span><span>函數</span></a></li>
+<li><a href="https://cyberbotics.com/doc/guide/using-numerical-optimization-methods#using-the-wb_supervisor_world_reload-function"><span>使用wb_supervisor_world_reload</span><span>函數</span></a></li>
+<li><a href="https://cyberbotics.com/doc/guide/using-numerical-optimization-methods#using-the-wb_supervisor_world_reset-function"><span>使用wb_supervisor_world_reset</span><span>函數</span></a></li>
+<li><a href="https://cyberbotics.com/doc/guide/using-numerical-optimization-methods#by-starting-and-quitting-webots"><span>通過啟動和退出Webots</span></a></li>
+</ul>
+</li>
+</ul>
+<p> </p>
+<p>選擇正確的主管方法</p>
+<p>在<span>Webot</span>中有幾種使用優化算法的方法。大多數方法都依賴於<span><a href="https://cyberbotics.com/doc/reference/supervisor">Supervisor</a></span>控制器。</p>
+<p>數值優化通常可以分解為兩個單獨的任務：</p>
+<ol>
+<li>運行優化算法：系統搜索，隨機搜索，遺傳算法（<span>GA</span>），粒子群優化（<span>PSO</span>），模擬退火等。</li>
+<li>使用優化算法指定的一組參數運行機器人行為。</li>
+</ol>
+<p>需要決定的重要事情之一是，這兩個不同任務的實現應該進入同一個控制器還是在兩個單獨的控制器中。讓我們討論兩種方法：</p>
+<p></p>
+<p>使用單個控制器</p>
+<p>如果您的仿真一次只需要評估一個機器人，例如，您正在優化人形機器人的運動步態或單個機器人的行為，則可以在同一控制器中實現這兩個任務；這樣會導致代碼更簡單。這是僅使用一個控制器對兩個參數<em><span>a</span></em>和<em><span>b</span></em>進行系統優化的偽代碼示例：</p>
+<p><img alt="" height="773" src="https://s40723114.github.io/cd2020ag1/images/%E7%BF%BB%E8%AD%AF.jpg" width="951"/></p>
+<p>在此示例中，機器人運行了<span>30</span>個模擬秒，然後評估了適應度，然後將機器人移回到其初始位置。請注意，此控制器需要在其字段設置為的<a href="https://cyberbotics.com/doc/reference/robot"><span>機器人</span></a>節點中執行，以訪問讀取和重置機器人位置所需的功能。supervisorTRUEwb_supervisor_field_*</p>
+<h4>使用兩種不同類型的控制器</h4>
+<p>相反，如果您的仿真需要同時執行多個機器人，例如群體機器人，則建議使用兩種不同類型的控制器：一種用於優化算法，另一種用於機器人的行為。優化算法應該放在<a href="https://cyberbotics.com/doc/reference/supervisor">Supervisor</a>控制器中，而機器人的行為可以放在常規（非<span>Supervisor</span>）控制器中。</p>
+<p>由於這些控制器將在單獨的系統進程中運行，因此它們將無法訪問彼此的變量。但是，為了指定需要評估的參數集，他們將不得不通過其他某種方式進行通信。可能並且建議使用<span>Webots </span><a href="https://cyberbotics.com/doc/reference/emitter"><span>發射器</span></a>和<a href="https://cyberbotics.com/doc/reference/receiver"><span>接收器</span></a>在<a href="https://cyberbotics.com/doc/reference/supervisor">Supervisor</a>控制器和其他控制器之間交換信息。例如，在典型情況下，<a href="https://cyberbotics.com/doc/reference/supervisor">Supervisor</a>控制器會將評估參數（例如，基因型）發送給機器人控制器。機器人控制器聆聽其<a href="https://cyberbotics.com/doc/reference/receiver"><span>接收器</span></a>，等待一組新參數。收到後，機器人控制器開始執行由參數集指定的行為。在這種情況下，<a href="https://cyberbotics.com/doc/reference/supervisor">Supervisor</a>控制器需要一個<a href="https://cyberbotics.com/doc/reference/emitter">Emitter<span>，</span></a>而每個機器人都需要一個<a href="https://cyberbotics.com/doc/reference/receiver">Receiver</a>。</p>
+<p>根據算法需求，可以在<a href="https://cyberbotics.com/doc/reference/supervisor">Supervisor</a>控制器或單個機器人控制器中評估適應性。如果在機器人控制器中進行評估，則需要將適應性結果發送回<a href="https://cyberbotics.com/doc/reference/supervisor">Supervisor</a>控制器。這種雙向通信類型需要使用其他<a href="https://cyberbotics.com/doc/reference/emitter"><span>發射器</span></a>和<a href="https://cyberbotics.com/doc/reference/receiver"><span>接收器</span></a>。</p>
+<p>重置機器人</p>
+<p>使用優化算法時，您可能需要在每次適應性評估之後或之前重置機器人。有幾種重置機器人的方法：</p>
+<h4>使用<span>wb_supervisor_field_set_ *</span>和<span>wb_supervisor_simulation_reset_physics</span>函數</h4>
+<p>您可以使用wb_supervisor_field_set...和wb_supervisor_simulation_reset_physics功能輕鬆重置機器人的位置，方向和物理狀態，下面是一個示例：</p>
+<p><img alt="" height="319" src="https://s40723114.github.io/cd2020ag1/images/%E7%BF%BB%E8%AD%AF2.jpg" width="948"/></p>
+<p>上述方法的缺點在於，它僅會重置機器人的主要位置和方向。這對於某些類型的優化可能很好，但對於其他類型則不夠。儘管可以向要重置的數據集添加更多參數，但是有時很難重置所有內容。這樣既不會重置電動機位置，也不會重置機器人控制器。應當使用該wb_motor_set_position功能重置電動機位置，並且應該通過從主管進程向機器人控制器進程發送消息（使用<span>Webots </span><a href="https://cyberbotics.com/doc/reference/emitter"><span>發射</span></a><a href="https://cyberbotics.com/doc/reference/receiver"><span>器</span></a> / <a href="https://cyberbotics.com/doc/reference/receiver"><span>接收器</span></a>通信系統）來重置機器人控制器。機械手控制器程序應該能夠處理此類消息並相應地重置其狀態。</p>
+<h4>使用<span>wb_supervisor_world_reload</span>函數</h4>
+<p>此功能從一開始就重新啟動物理模擬和所有控制器。使用此方法，所有設置都將重置，包括物理特性，電機位置和控制器。但是此功能還會重新啟動稱為該wb_supervisor_world_reload功能的控制器，這通常是運行優化算法的控制器，結果是失去了優化狀態。因此，對於使用這種技術，有必要開發可以保存和恢復優化算法完整狀態的功能。優化狀態應在調用wb_supervisor_world_reload函數之前保存，並在<a href="https://cyberbotics.com/doc/reference/supervisor">Supervisor</a>控制器重新啟動時重新加載。這是一個偽代碼示例：</p>
+<p><img alt="" height="800" src="https://s40723114.github.io/cd2020ag1/images/%E7%BF%BB%E8%AD%AF3.jpg" width="950"/></p>
+<p><img alt="" height="379" src="https://s40723114.github.io/cd2020ag1/images/%E7%BF%BB%E8%AD%AF4.jpg" width="948"/></p>
+<p>例如，如果將此技術與遺傳算法一起使用，則該optimizer_save_state功能應至少保存當前<span>GA</span>群體的所有基因型和適應性結果。如果將此技術與<span>“</span>粒子群優化<span>”</span>一起使用，則該optimizer_save_state功能至少應保存當前群中所有粒子的位置，速度和適應性。</p>
+<h4>使用<span>wb_supervisor_world_reset</span>函數</h4>
+<p>與該<a href="https://cyberbotics.com/doc/reference/supervisor#wb_supervisor_world_reload">wb_supervisor_world_reload</a>功能類似，此功能可重置物理模擬。但是，它不會重新啟動控制器。該功能的優點是可以使用該<a href="https://cyberbotics.com/doc/reference/supervisor#wb_supervisor_node_restart_controller">wb_supervisor_node_restart_controller</a>功能僅重新啟動所需的控制器。通常情況下，你將重新啟動<a href="https://cyberbotics.com/doc/reference/robot"><span>機器人</span></a>控制器，而不是<a href="https://cyberbotics.com/doc/reference/supervisor"><span>主管</span></a>之一。因此，<a href="https://cyberbotics.com/doc/reference/supervisor">Supervisor</a>控制器無需保存和恢復優化算法的完整狀態。</p>
+<h4>通過啟動和退出<span>Webots</span></h4>
+<p>最後，最後一種方法是啟動和退出<span>Webots</span>程序以進行每個參數評估。這聽起來似乎有些開銷，但實際上，與評估控制器所需的時間相比，<span>Webots</span>的啟動時間通常很短，因此這種方法非常合理。</p>
+<p>例如，可以從<span>Shell</span>腳本或適合於運行優化算法的任何類型的程序中調用<span>Webot</span>。每次啟動<span>Webot</span>顯然都會完全重載世界，因此每個機器人都將從相同的初始狀態啟動。這種方法的缺點是優化算法必須在<span>Webots</span>之外進行編程。可以使用任何編程語言（例如<span>Shell</span>腳本，<span>C</span>，<span>PHP</span>，<span>perl</span>等）編寫此外部程序，前提是可以像<span>C</span>標準system函數那樣調用<span>Webots</span>並等待其終止。相反，必須在<span>Webots</span>控制器中實現參數評估。</p>
+<p>通過這種方法，優化算法和機器人控制器在單獨的系統過程中運行，但是它們必須相互通信才能交換參數集和適用性結果。一種簡單的方法是使它們通過使用文本文件進行通信。例如，優化算法可以將基因型值寫入文本文件，然後調用<span>Webots</span>。當<span>Webots</span>啟動時，機器人控制器讀取基因型文件並執行參數評估。機械手控制器完成評估後，會將適應性結果寫入另一個文本文件，然後調用該wb_supervisor_simulation_quit函數終止<span>Webot</span>。然後，控制流程返回到優化程序，該程序可以讀取結果適應度，將適應度與當前基因型相關聯並繼續進行下一個基因型。</p>
+<p>這是機器人評估控制器可能的（偽代碼）實現：</p>
+<p><img alt="" height="719" src="https://s40723114.github.io/cd2020ag1/images/%E7%BF%BB%E8%AD%AF5.jpg" width="949"/></p>
+<p>您將在<span>Webots</span>發行中找到使用優化技術進行模擬的完整示例：在<span>“ </span><span><a href="https://github.com/cyberbotics/webots/tree/master/projects/samples/curriculum/worlds">WEBOTS_HOME / projects / samples / curriculum / worlds</a></span> ”目錄中查找名為<span>“ advanced_pa</span>rticle_swarm_optimization.wbt”和<span>“ advanced_genetic_algorithm.wbt”</span>的<span><a href="https://github.com/cyberbotics/webots/tree/master/projects/samples/curriculum/worlds"><span>世界</span></a></span>。這些例子在<span><a href="http://en.wikibooks.org/wiki/Cyberbotics'_Robot_Curriculum">Cyber<span></span>botics<span>機器人課程</span></a></span>的<em>高級編程練習</em>中進行了描述。</p>
+<p></p>
+<p> </p>
+<p>控制器插件</p>
+<p>控制器功能可以通過用戶實現的插件進行擴展。控制器插件的目的是簡化機器人特定的機器人窗口和遠程控制包裝程序的編程。</p>
+<p>對控制器插件進行編程而不是直接在控制器中進行編程更加方便，因為它大大提高了代碼的模塊化和可伸縮性。例如，一個機器人窗口可以用於多個機器人。</p>
+<p>指數</p>
+<ul>
+<li><a href="https://cyberbotics.com/doc/guide/controller-plugin#fundamentals"><span>基本原理</span></a></li>
+<li><a href="https://cyberbotics.com/doc/guide/controller-plugin#robot-window"><span>機器人窗口</span></a></li>
+<li><a href="https://cyberbotics.com/doc/guide/controller-plugin#remote-control-plugin"><span>遠程控制插件</span></a></li>
+</ul>
+<p>基本原理</p>
+<p>無論使用哪種語言，控制器可執行文件在啟動時都與<span>Webots</span>控制器庫（<span>libController</span>）鏈接。控制器插件是一個共享庫，由<span>libController</span>在特定事件後根據其類型動態加載（在運行時）。</p>
+<p>下<a href="https://cyberbotics.com/doc/guide/controller-plugin#controller-plugin-overview"><span>圖</span></a>顯示了控制器插件系統的概述。在此圖中，虛線箭頭顯示瞭如何加載共享庫，大虛線表示進程間通信（<span>IPC</span>）。<span>libController</span>和<span>Webots</span>之間的<span>IPC</span>是一個管道（在<span>Windows</span>中，這是一個命名管道，否則是一個本地域套接字）。<span>libRemoteControl</span>和真實機械手之間的<span>IPC</span>由用戶定義（<span>TCP / IP</span>，串行等）。</p>
+<p>該系統的設計如下。所有實體（控制器，遠程控制庫和機械手窗口庫）應僅調用<span>libController</span>接口（<span>Webots API</span>）功能。出於模塊化原因，控制器不應知道其機器人窗口和實際機器人。唯一的例外是有關機械手窗口庫的信息，該窗口庫可以知道遠程控制庫以進行初始化和監視。這可以通過通過了<span>libController API</span>來完成wb_robot_get_mode，wb_robot_set_mode和wb_remote_control_custom_function功能。當然，這些規則很容易被打破，因為每個實體都運行在同一個流程中。但是，我們建議您尊重他們以獲得良好的設計。</p>
+<p>控制器插件被設計為用<span>C / C ++</span>編寫，因為結果應該是一個動態庫。但是，當然可以使用它們之間的<span>C / C ++</span>包裝器以其他語言編寫它們。</p>
+<p>加載後，<span>libController</span>會調用一些控制器插件功能（入口點）。必須定義一組入口點，以使控制器插件順利運行。這些入口點中的一些是必需的，而某些是可選的。</p>
+<p>所述<a href="https://cyberbotics.com/doc/reference/robot"><span>機器人</span></a>節點通過其定義了控制器的插件的位置<em>窗口</em>及其<em>REMOTECONTROL</em>字段。</p>
+<p>控制器插件在進程的主線程（也稱為<span>GUI</span>線程）中運行：與控制器可執行文件相同。這意味著，如果插件的入口點被阻止，則控制器也將被阻止。並且如果插件崩潰，則控制器也崩潰。</p>
+<p>《<span><a href="https://cyberbotics.com/doc/reference/robot"><span>參考手冊》中</span></a></span>介紹了將<em>窗口</em>和<em>遙控器</em>轉換為現有路徑的搜索算法。</p>
+<p>借助主<span>Makefile</span>（與用於構建控制器的文件相同）來構建每個分佈式共享庫：</p>
+<p>WEBOTS_HOME/resources/Makefile.include</p>
+<p><img alt="" height="439" src="https://s40723114.github.io/cd2020ag1/images/%E7%BF%BB%E8%AD%AF6.jpg" width="848"/></p>
+<p>機器人窗口</p>
+<p>機器人窗口使程序員可以有效地為其機器人創建自定義用戶界面。可以通過雙擊虛擬機器人或使用<a href="https://cyberbotics.com/doc/guide/the-3d-window#context-menu"><span>上下文菜單</span></a>來打開機器人窗口。<a href="https://cyberbotics.com/doc/reference/robot"><span>機械手</span></a>節點的<em>窗口</em>字段指定機械手窗口。</p>
+<p>機器人窗口以<span>HTML</span>格式實現，並提供以下功能：</p>
+<ol>
+<li>他們依靠<span>HTML</span>佈局和<span>JavaScript</span>編程。</li>
+<li>它們使用兩個<span>JavaScript</span>函數直接與機器人控制器通信：window("&lt;robot window name&gt;").receive和webots.window("&lt;robot window name&gt;").send。等效的控制器功能是wb_robot_wwi_receive_text和wb_robot_wwi_send_text。</li>
+<li>它們已經可以在網絡上使用，可以用來在網頁上顯示機器人窗口。</li>
+</ol>
+<p>robots/thymio/thymio2.wbt示例仿真中提供了一個<span>HTML</span>機械手窗口的簡單示例，並演示了：</p>
+<ul>
+<li>如何在機器人窗口中顯示傳感器信息。</li>
+<li>如何從機器人窗口向控制器程序發送用戶界面事件（例如鼠標單擊）。</li>
+<li>如何從控制器程序更改機器人窗口的標題。</li>
+</ul>
+<p>HTML機械手窗口可以與使用任何受支持的編程語言（即<span>C</span>，<span>C ++</span>，<span>Python</span>，<span>Java</span>，<span>MATLAB</span>和<span>ROS</span>）編寫的控制器程序進行通信。如果在模擬運行過程中更改或重新啟動了<a href="https://cyberbotics.com/doc/reference/robot"><span>機器人</span></a>的控制器，則與同一<a href="https://cyberbotics.com/doc/reference/robot"><span>機器人</span></a>節點關聯的機器人窗口也將重新啟動。</p>
+<p>遠程控制插件</p>
+<p>遠程控制插件允許使用<span>Webots API</span>輕鬆有效地創建接口，以與真實的機器人進行通信。遠程控制庫的主要目的是使用與真實機器人通信的協議來包裝機器人使用的所有<span>Webots API</span>函數。通常，程序（客戶端）在真實機器人上運行，並對通信協議進行解碼以與真實機器人設備進行對話。</p>
+<p>當實體調用wb_robot_set_modelibController函數時，將初始化遠程控制庫。該實體通常是<span>libRobotWindow</span>，因為使用<span>GUI</span>初始化通信（即輸入機器人的<span>IP</span>地址等）非常方便。</p>
+<p>遠程控制庫有兩個入口點：</p>
+<ul>
+<li>bool wbr_init(WbrInterface *ri)</li>
+</ul>
+<p>libController調用此函數以初始化遠程控制庫。在第一個wb_robot_set_mode函數調用之後調用它。該功能的目標是將給定的WbrInterface功能與遠程控制庫中的功能映射到結構中。</p>
+<ul>
+<li>void wbr_cleanup()</li>
+</ul>
+<p>libController調用此函數以清理庫。</p>
+<p>該WbrInterface結構具有多個功能（強制性），必須對其進行映射才能使遠程控制庫平穩運行。他們來了：</p>
+<ul>
+<li>bool wbr_start(const char *args)</li>
+</ul>
+<p>當應該開始與真實機器人的連接時（即<a href="https://cyberbotics.com/doc/reference/robot#wb_robot_set_mode">wb_robot_set_mode(WB_MODE_REMOTE_CONTROL, ...)</a>從控制器調用時），將調用此函數。該函數的返回值應告知連接是否成功。該參數與wb_robot_set_mode初始化遙控器時給該功能的參數匹配。由於機器人窗口庫通常負責調用該wb_robot_set_mode函數，因此它們之間傳遞的結構應該匹配。</p>
+<ul>
+<li>void wbr_stop()</li>
+</ul>
+<p>當與真實機器人的連接應停止時，將調用此函數。通常，應該在停止連接之前發送停止實際機器人執行器的命令。</p>
+<ul>
+<li>bool wbr_has_failed()</li>
+</ul>
+<p>libController經常調用此函數以檢查連接的有效性。此函數返回的值應始終與連接有效性匹配。</p>
+<ul>
+<li>void wbr_stop_actuators()</li>
+</ul>
+<p>調用此功能可停止實際機器人的執行器。當用戶按下模擬器的暫停按鈕時，將調用此方法。</p>
+<ul>
+<li>int wbr_robot_step(int period)</li>
+</ul>
+<p>當控制器進入步進循環時，將調用此功能。此功能的目的是發送執行器命令，然後讀取啟用的傳感器的值。定時問題應該在那裡解決。機械手應至少等待<em>一段時間（</em>毫秒），如果<span> </span>超過該<em>時間段，</em>則返回增量時間。</p>
+<p>如上所述，必須與真實機器人一起使用的所有<span>Webots API</span>功能都必須包裝在遠程控制庫中。為達到這個：</p>
+<ul>
+<li>必須將<span>libController</span>的內部狀態設置為與機械手的當前狀態匹配。</li>
+</ul>
+<p>通常，當已知傳感器的值時wbr_sensor_set_value，必須調用相應的<span> </span>功能。</p>
+<ul>
+<li>發送給<span>libController</span>的命令必須包裝。</li>
+</ul>
+<p>通常，在設置執行器的命令時，將wbr_actuator_set_value)調用相應的<span> </span>功能，並且必須將其發送給實際的機器人。</p>
+<p>遠程控制<span>API</span>和WbrInterface結構的完整定義包含在以下文件中：</p>
+<p>WEBOTS_HOME/include/controller/c/webots/remote_control.h</p>
+<p>例如，如果您希望能夠使用真實機器人的距離傳感器，則必須包裝該wbr_set_sampling_period函數（設置遠程控制庫的內部狀態以僅在需要時讀取此距離傳感器），然後調用wbr_distance_sensor_set_value刷新距離傳感器後（通常到wbr_robot_step函數中）將函數存儲到遠程控制庫中。</p>
+<p>可以在以下目錄中找到完整的示例（使用藍牙與<span>e-puck</span>機器人通信）：</p>
+<p>WEBOTS_HOME/projects/robots/e-puck/plugins/remote_controls/e-puck_bluetooth</p>
+<p></p>
+<h2>Top0文章</h2>
+<p></p>
 <p></p>
 </div>
 </div>
