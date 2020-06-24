@@ -63,6 +63,9 @@
 <v t="leo.20200624110413.1"><vh>W15</vh>
 <v t="leo.20200624110413.2"><vh>標題</vh></v>
 </v>
+<v t="leo.20200624113818.1"><vh>期末影片</vh>
+<v t="leo.20200624113818.2"><vh>標題</vh></v>
+</v>
 </v>
 </v>
 </v>
@@ -461,5 +464,19 @@ vertical: body pane on the botton</t>
 [網站](https://s40723104.github.io/cd2020/content/W12.html)
 
 &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/Fwt_LDqD964" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
+<t tx="leo.20200624113818.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624113818.2"># 期末影片
+
+[網站](https://s40723104.github.io/cd2020/content/%E6%9C%9F%E6%9C%AB%E5%BD%B1%E7%89%87.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/LpiOCY3iJVs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
 </tnodes>
 </leo_file>
