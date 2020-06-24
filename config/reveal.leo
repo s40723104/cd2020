@@ -21,19 +21,47 @@
 <v t="leo.20180902120523.9"><vh>封面投影片</vh>
 <v t="leo.20180902120523.10"><vh>封面投影片內容</vh></v>
 </v>
-<v t="leo.20180902120523.11"><vh>快捷鍵</vh>
-<v t="leo.20180902120523.12"><vh>投影片快捷鍵</vh></v>
+<v t="leo.20200624105307.1"><vh>python</vh>
+<v t="leo.20200624105307.2"><vh>python</vh></v>
 </v>
-<v t="leo.20180902120523.13"><vh>各式內容引用範例</vh>
-<v t="leo.20180902120523.14"><vh>導入數學符號與方程式</vh>
-<v t="leo.20180902120523.15"><vh>LaTeX 格式方程式</vh></v>
+<v t="leo.20180902120523.11"><vh>VIRTUALBOX</vh>
+<v t="leo.20180902120523.12"><vh>VIRTUALBOX</vh></v>
 </v>
-<v t="leo.20180902120523.16"><vh>導入縮排程式碼</vh>
-<v t="leo.20180902120523.17"><vh>引用程式碼</vh></v>
+<v t="leo.20200624105752.1"><vh>直播影片</vh>
+<v t="leo.20200624105752.2"><vh>標題</vh></v>
 </v>
-<v t="leo.20180902120523.18"><vh>導入影片</vh>
-<v t="leo.20180902120523.19"><vh>iframe 導入影片</vh></v>
+<v t="leo.20200624110205.1"><vh>W2</vh>
+<v t="leo.20200624110205.2"><vh>標題</vh></v>
 </v>
+<v t="leo.20200624110321.1"><vh>W3</vh>
+<v t="leo.20200624110321.2"><vh>標題</vh></v>
+</v>
+<v t="leo.20200624110331.1"><vh>W5</vh>
+<v t="leo.20200624110331.2"><vh>標題</vh></v>
+</v>
+<v t="leo.20200624110350.1"><vh>W6</vh>
+<v t="leo.20200624110350.2"><vh>標題</vh></v>
+</v>
+<v t="leo.20200624110406.1"><vh>W7</vh>
+<v t="leo.20200624110406.2"><vh>標題</vh></v>
+</v>
+<v t="leo.20200624110407.1"><vh>W9</vh>
+<v t="leo.20200624110407.2"><vh>標題</vh></v>
+</v>
+<v t="leo.20200624110409.1"><vh>W10</vh>
+<v t="leo.20200624110409.2"><vh>標題</vh></v>
+</v>
+<v t="leo.20200624110410.1"><vh>W11</vh>
+<v t="leo.20200624110410.2"><vh>標題</vh></v>
+</v>
+<v t="leo.20200624110505.1"><vh>W12</vh>
+<v t="leo.20200624110505.2"><vh>標題</vh></v>
+</v>
+<v t="leo.20200624110411.1"><vh>W14</vh>
+<v t="leo.20200624110411.2"><vh>標題</vh></v>
+</v>
+<v t="leo.20200624110413.1"><vh>W15</vh>
+<v t="leo.20200624110413.2"><vh>標題</vh></v>
 </v>
 </v>
 </v>
@@ -82,83 +110,6 @@ Created by [cd2020ag1](https://github.com/s40723114/cd2020ag1)
 
 
 &lt;iframe width="560" height="315" src="https://www.youtube.com/embed/L12brlNdQSQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
-<t tx="leo.20180902120523.13">&lt;section&gt;
-@others
-&lt;/section&gt;
-
-</t>
-<t tx="leo.20180902120523.14">&lt;section data-markdown&gt;
-    &lt;script type="text/template"&gt;
-&lt;!-- 請注意, @others 不可以內縮 --&gt;
-@others
-    &lt;/script&gt;
-&lt;/section&gt;
-
-
-
-						
-</t>
-<t tx="leo.20180902120523.15"># 數學符號與方程式
-
-Inline math equations go in like so: $\omega = d\phi / dt$. Display
-math should get its own line and be put in in double-dollarsigns:
-
-$$I = \int \rho R^{2} dV$$
-</t>
-<t tx="leo.20180902120523.16">&lt;section data-markdown&gt;
-    &lt;script type="text/template"&gt;
-&lt;!-- 請注意, @others 不可以內縮 --&gt;
-@others
-    &lt;/script&gt;
-&lt;/section&gt;
-
-
-
-						
-</t>
-<t tx="leo.20180902120523.17">## 利用 Markdown 寫投影片
-以下利用 Markdown 格式展示 Python 程式碼:
-```
-@language python
-# use threading and subprocess to threading the make process
-import os
-import subprocess
-import threading
-
-def domake():
-    
-    path = "../exposed/api/exposed"
-    ubuntu = "../Ubuntu"
-    
-    # create obj path
-    
-    if not os.path.exists(path+"/../obj"):
-        os.makedirs(path+"/../obj")
-    
-    subprocess.call(["make", "clean"], cwd=path)
-    subprocess.call("make", cwd=path)
-    subprocess.call(["cp", "{libslvs.so, _slvs.so, slvs.py}", ubuntu], cwd=path)
-    subprocess.call(["python3", "circle_ex.py"], cwd=path+"/"+ubuntu)
-    
-make = threading.Thread(target=domake)
-make.start()
-```
-</t>
-<t tx="leo.20180902120523.18">&lt;section data-markdown&gt;
-    &lt;script type="text/template"&gt;
-@others
-    &lt;/script&gt;
-&lt;/section&gt;
-
-
-						
-</t>
-<t tx="leo.20180902120523.19">## 使用 iframe 導入影片
-
-### 導入影片 template
-
-&lt;iframe src="https://player.vimeo.com/video/183950627" width="640" height="492" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
-</t>
 <t tx="leo.20180902120523.2"></t>
 <t tx="leo.20180902120523.3">@language xml
 @tabwidth -4
@@ -329,5 +280,186 @@ QLineEdit#editorLabel {
 }</t>
 <t tx="leo.20180902120538.3">horizontal: body pane to the left
 vertical: body pane on the botton</t>
+<t tx="leo.20200624105307.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624105307.2"># 更新python至3.8.2
+更新python
+
+[設定操作](https://s40723104.github.io/cd2020/content/%E6%9B%B4%E6%96%B0python%E8%87%B33.8.2.html)
+
+
+
+</t>
+<t tx="leo.20200624105752.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624105752.2"># 每周AG1直播影片</t>
+<t tx="leo.20200624110205.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624110205.2"># W2 AG1直播影片
+
+[網站](https://s40723104.github.io/cd2020/content/W2.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/JXUKf0cfJcc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
+<t tx="leo.20200624110321.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624110321.2"># W3 AG1直播影片
+
+[網站](https://s40723104.github.io/cd2020/content/W3.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/QTfPD5bpeKc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
+<t tx="leo.20200624110331.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624110331.2"># W5 AG1直播影片
+
+[網站](https://s40723104.github.io/cd2020/content/W5.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/ElNea4b1dX8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
+<t tx="leo.20200624110350.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624110350.2"># W6 AG1直播影片
+
+[網站](https://s40723104.github.io/cd2020/content/W6.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/B6jt5OAf424" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
+<t tx="leo.20200624110406.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624110406.2"># W7 AG1直播影片
+
+[網站](https://s40723104.github.io/cd2020/content/W7.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/958HX03aAf8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
+<t tx="leo.20200624110407.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624110407.2"># W9 AG1直播影片
+
+[網站](https://s40723104.github.io/cd2020/content/W9.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/opi_PrsUMW4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
+<t tx="leo.20200624110409.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624110409.2"># W10 AG1直播影片
+
+[網站](https://s40723104.github.io/cd2020/content/W10.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/HauW6F-ez7w" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
+<t tx="leo.20200624110410.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624110410.2"># W11 AG1直播影片
+
+[網站](https://s40723104.github.io/cd2020/content/W11.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/Y-v5v3glZM4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
+<t tx="leo.20200624110411.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624110411.2"># W14 AG1直播影片
+
+[網站](https://s40723104.github.io/cd2020/content/W14.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/Oz_qyhhmopk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
+<t tx="leo.20200624110413.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624110413.2"># W15 AG1直播影片
+
+[網站](https://s40723104.github.io/cd2020/content/W15.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/T4lDjSueeW4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
+<t tx="leo.20200624110505.1">&lt;section data-markdown&gt;
+    &lt;script type="text/template"&gt;
+@others
+    &lt;/script&gt;
+&lt;/section&gt;
+
+
+						
+</t>
+<t tx="leo.20200624110505.2"># W12 AG1直播影片
+
+[網站](https://s40723104.github.io/cd2020/content/W12.html)
+
+&lt;iframe width="560" height="315" src="https://www.youtube.com/embed/Fwt_LDqD964" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;</t>
 </tnodes>
 </leo_file>
